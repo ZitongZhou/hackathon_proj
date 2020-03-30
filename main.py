@@ -11,6 +11,9 @@ def predict(alpha,beta,N,Noldmeet,Nnewmeet,Nfriendpool,Nsym,eg,eg2):
     import numpy as np
     import random
     import time
+    import matplotlib.pyplot as plt
+    import numpy as np
+    import matplotlib
     class TrieNode(object):
         def __init__(self,x):
             self.children = {}
@@ -47,9 +50,6 @@ def predict(alpha,beta,N,Noldmeet,Nnewmeet,Nfriendpool,Nsym,eg,eg2):
                      mempool[key2][key]=(i)
                  elif i not in mempool[key2][key]:
                      mempool[key2][key]=mempool[key2][key]+tuple([i])
-
-
-    
     time_end=time.time()
     print('time cost',time_end-time_start,'s')
     ### optional
@@ -62,7 +62,6 @@ def predict(alpha,beta,N,Noldmeet,Nnewmeet,Nfriendpool,Nsym,eg,eg2):
     #          level=TrieNode(i)    
     #      for key in ppl.keys():
     #          level.children[key]=TrieNode(ppl[key])
-
 
     ### 
     cpath=[[] for _ in range(N)]   ##path starting from a patient with symptom
@@ -114,15 +113,16 @@ def predict(alpha,beta,N,Noldmeet,Nnewmeet,Nfriendpool,Nsym,eg,eg2):
     for i in prob:
         if i==0:
             su+=1
-    print('number of safe users',su)##########number of safe people
-    print('Look at user',eg)
-    print('probability of carrying virus',prob[eg])
-    print('how to get the virus from people with symptom',cpath[eg])        ######is eg safe or not   all the path from patient with symptom
-    print('how to get the virus from people during incubation',cpathin[eg])      ######is eg safe or not   all the path from patient during incubation
+    return su,prob[eg],cpath[eg],cpathin[eg],prob[eg2],cpath[eg2],cpathin[eg2]
+    # print('number of safe users',su)##########number of safe people
+    # print('Look at user',eg)
+    # print('probability of carrying virus',prob[eg])
+    # print('how to get the virus from people with symptom',cpath[eg])        ######is eg safe or not   all the path from patient with symptom
+    # print('how to get the virus from people during incubation',cpathin[eg])      ######is eg safe or not   all the path from patient during incubation
 
-    print('Look at user',eg2)
-    print('probability of carrying virus',prob[eg2])
-    print('how to get the virus from people with symptom',cpath[eg2])        ######is eg safe or not   all the path from patient with symptom
-    print('how to get the virus from people during incubation',cpathin[eg2])      ######is eg safe or not   all the path from patient during incubation
-    print('most dangerous users',[i for i in range(len(prob)) if prob[i]>0.1])
-predict(alpha,beta,N,Noldmeet,Nnewmeet,Nfriendpool,Nsym,eg,eg2)
+    # print('Look at user',eg2)
+    # print('probability of carrying virus',prob[eg2])
+    # print('how to get the virus from people with symptom',cpath[eg2])        ######is eg safe or not   all the path from patient with symptom
+    # print('how to get the virus from people during incubation',cpathin[eg2])      ######is eg safe or not   all the path from patient during incubation
+    # print('most dangerous users',[i for i in range(len(prob)) if prob[i]>0.1])
+print(predict(alpha,beta,N,Noldmeet,Nnewmeet,Nfriendpool,Nsym,eg,eg2))
