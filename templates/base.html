@@ -33,16 +33,18 @@
             </ul>
           </div>
         </nav>
-        <h1>A good website!</h1>         
-        <p>  \(\alpha \): probability of spread from a person with symptom to a close-contact person</p>
-        <p>  \(\beta \): probability of spread from a person during incubation to a close-contact person</p>
-        <p>  \(N \): number of users</p>
-        <p>  \(N_{old}^{meet} \): average number of close-contact old friends everyday</p>
-        <p>  \(N_{new}^{meet} \): average number of close-contact strangers everyday</p>
-        <p>  \(N_{fr} \): average number of friends</p>
-        <p>  \(N_{symp} \): number of users reporting symptom</p>
-        <p>  \(user_1 \): predict the probability of carrying virus for user with ID \( = user_1 \)</p>
-        <p>  \(user_2 \): predict the probability of carrying virus for user with ID \( = user_2 \)</p>
+        <h1 style="margin-left: 40px">A good website!</h1>         
+        <p style="margin-left: 40px">  \(\alpha \): probability of spread from a person with symptom to a close-contact person</p>
+        <p style="margin-left: 40px">  \(\beta \): probability of spread from a person during incubation to a close-contact person</p>
+        <p style="margin-left: 40px">  \(N \): number of users</p>
+        <p style="margin-left: 40px">  \(N_{old}^{meet} \): average number of close-contact old friends everyday</p>
+        <p style="margin-left: 40px">  \(N_{new}^{meet} \): average number of close-contact strangers everyday</p>
+        <p style="margin-left: 40px">  \(N_{fr} \): average number of friends</p>
+        <p style="margin-left: 40px">  \(N_{symp} \): number of users reporting symptom</p>
+        <p style="margin-left: 40px">  \(user_1 \): predict the probability of carrying virus for user with ID \( = user_1 \)</p>
+        <p style="margin-left: 40px">  \(user_2 \): predict the probability of carrying virus for user with ID \( = user_2 \)</p>
+        <img src="{{ url_for('static', filename='hist.png' ) }}" alt="Histogram">
+        <img src="{{ url_for('static', filename='pie.png' ) }}" alt="Pie chart">
         {% block content %}
         {% endblock %}
         <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
