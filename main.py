@@ -7,18 +7,20 @@ Nfriendpool=100  ##average number of friends
 Nsym=10   ##number of users reporting symptom
 eg=500    ##predict the probability of carrying virus for user#500 and user#1000
 eg2=1000
+
 def predict(alpha,beta,N,Noldmeet,Nnewmeet,Nfriendpool,Nsym,eg,eg2):
     import numpy as np
     import random
     import time
     import matplotlib.pyplot as plt
     import numpy as np
-    import matplotlib
-    class TrieNode(object):
-        def __init__(self,x):
-            self.children = {}
-            self.issym = False
-            self.val=x
+    import matplotlib.mlab as mlab
+    import seaborn as sns
+    # class TrieNode(object):
+    #     def __init__(self,x):
+    #         self.children = {}
+    #         self.issym = False
+    #         self.val=x
             #self.maxfre = 0
     ### build pool of memory by recalling
     #np.random.seed(9001)
@@ -108,12 +110,33 @@ def predict(alpha,beta,N,Noldmeet,Nnewmeet,Nfriendpool,Nsym,eg,eg2):
              if len(pathi)==2:
                  prob[pathi[-1][0]]*=(1-beta)
     prob=[1-i for i in prob]  ##probability of carrying varius
-
     su=0
     for i in prob:
         if i==0:
             su+=1
+    plt.style.use('ggplot')
+    plt.hist(prob, 
+        bins = 20, 
+        color = 'steelblue', 
+        edgecolor = 'k', 
+        label = 'Probability of infection' )
+    plt.xlabel('probability of infection')
+    plt.ylabel('number of people')
+    plt.savefig('static/hist.png')
+    plt.cla()
+    #plt.hist(prob,1000)
+    labels=['COVID-19 tests needed','COVID-19 tests not needed']
+    s=0
+    for i in prob:
+         if i==0:
+                s+=1
+    X=[s,len(prob)-s] 
+    plt.style.use('ggplot')
+    plt.pie(X,labels=labels,autopct='%1.2f%%',colors=sns.color_palette("muted"))
+    plt.savefig('static/pie.png')
+    plt.cla()
     return su,prob[eg],cpath[eg],cpathin[eg],prob[eg2],cpath[eg2],cpathin[eg2]
+    #return prob
     # print('number of safe users',su)##########number of safe people
     # print('Look at user',eg)
     # print('probability of carrying virus',prob[eg])
@@ -125,4 +148,4 @@ def predict(alpha,beta,N,Noldmeet,Nnewmeet,Nfriendpool,Nsym,eg,eg2):
     # print('how to get the virus from people with symptom',cpath[eg2])        ######is eg safe or not   all the path from patient with symptom
     # print('how to get the virus from people during incubation',cpathin[eg2])      ######is eg safe or not   all the path from patient during incubation
     # print('most dangerous users',[i for i in range(len(prob)) if prob[i]>0.1])
-print(predict(alpha,beta,N,Noldmeet,Nnewmeet,Nfriendpool,Nsym,eg,eg2))
+predict(alpha,beta,N,Noldmeet,Nnewmeet,Nfriendpool,Nsym,eg,eg2)
