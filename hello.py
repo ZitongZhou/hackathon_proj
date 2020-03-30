@@ -13,7 +13,7 @@ from toy import toy
 
 app = Flask(__name__)
 app.secret_key = "hello"
-app.permanent_session_lifetime = timedelta(minutes = 1)
+# app.permanent_session_lifetime = timedelta(minutes = 1)
 
 @app.route('/')
 def home():
@@ -23,7 +23,7 @@ def home():
 @app.route('/login', methods = ['POST', 'GET'])
 def login():
     if request.method == 'POST':
-        session.permanent = True
+        # session.permanent = False
         alpha = float(request.form["alpha"])
         beta = float(request.form["beta"])
         N = int(request.form["N"])
@@ -36,23 +36,23 @@ def login():
         
         user = request.form["nm"]
         session["user"] = user
-        if "user" in session:
-
-            su,prob_1,cpath_1,cpathin_1,prob_2,cpath_2,cpathin_2 = predict(alpha,beta,N,Noldmeet,Nnewmeet,Nfriendpool,Nsym,eg,eg2)
-            flash(f"Model successfully loaded!")
-            flash(f'number of safe users: {su}')##########number of safe people
-            flash(f'Look at user: {eg}')
-            flash(f'probability of carrying virus: {prob_1}')
-            flash(f'how to get the virus from people with symptom: {cpath_1}')        ######is eg safe or not   all the path from patient with symptom
-            flash(f'how to get the virus from people during incubation: {cpathin_1}')      ######is eg safe or not   all the path from patient during incubation
+        # if "user" in session:
+        su,prob_1,cpath_1,cpathin_1,prob_2,cpath_2,cpathin_2 = predict(alpha,beta,N,Noldmeet,Nnewmeet,Nfriendpool,Nsym,eg,eg2)
+        flash(f"Model successfully loaded!")
+        flash(f'number of safe users: {su}')##########number of safe people
+        flash(f'Look at user: {eg}')
+        flash(f'probability of carrying virus: {prob_1}')
+        flash(f'how to get the virus from people with symptom: {cpath_1}')        ######is eg safe or not   all the path from patient with symptom
+        flash(f'how to get the virus from people during incubation: {cpathin_1}')      ######is eg safe or not   all the path from patient during incubation
+    
+        flash(f'Look at user: {eg2}')
+        flash(f'probability of carrying virus: {prob_2}')
+        flash(f'how to get the virus from people with symptom: {cpath_2}')        ######is eg safe or not   all the path from patient with symptom
+        flash(f'how to get the virus from people during incubation: {cpathin_2}')
         
-            flash(f'Look at user: {eg2}')
-            flash(f'probability of carrying virus: {prob_2}')
-            flash(f'how to get the virus from people with symptom: {cpath_2}')        ######is eg safe or not   all the path from patient with symptom
-            flash(f'how to get the virus from people during incubation: {cpathin_2}')
-            
-            flash(f'{user}, thank you for using our model.')
-        return redirect(url_for("user"))
+        flash(f'{user}, thank you for using our model.')
+            # session.pop("user", None)
+        return redirect(url_for("home"))
     else:
         if "user" in session:
             flash("Already loaded model!")
