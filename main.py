@@ -1,6 +1,6 @@
 alpha=0.5   ##probability of spread from a person with symptom to a close-contact person
 beta=0.1    ##probability of spread from a person during incubation to a close-contact person
-N=100000    ##number of users
+N=100000   ##number of users
 Noldmeet=3  ##average number of close-contact old friends everyday
 Nnewmeet=1  ##average number of close-contact strangers everyday
 Nfriendpool=100  ##average number of friends
@@ -33,7 +33,7 @@ def predict(alpha,beta,N,Noldmeet,Nnewmeet,Nfriendpool,Nsym,eg,eg2):
         friendpool=np.random.randint(N,size=min(np.random.poisson(lam=Nfriendpool),N))
         for date in range(30):
              x=np.random.randint(N,size=socialnew[date])
-             y=random.sample(list(friendpool),socialold[date])
+             y=random.sample(list(friendpool),min(socialold[date],len(list(friendpool))))
              new[date]=tuple(x)+tuple(y)
         mempool.append(new)
     ### build symptom
@@ -125,7 +125,7 @@ def predict(alpha,beta,N,Noldmeet,Nnewmeet,Nfriendpool,Nsym,eg,eg2):
     plt.savefig('static/hist.png')
     plt.cla()
     #plt.hist(prob,1000)
-    labels=['COVID-19 tests needed','COVID-19 tests not needed']
+    labels=['COVID-19 tests not needed','COVID-19 tests needed']
     s=0
     for i in prob:
          if i==0:
@@ -135,17 +135,46 @@ def predict(alpha,beta,N,Noldmeet,Nnewmeet,Nfriendpool,Nsym,eg,eg2):
     plt.pie(X,labels=labels,autopct='%1.2f%%',colors=sns.color_palette("muted"))
     plt.savefig('static/pie.png')
     plt.cla()
-    return su,prob[eg],cpath[eg],cpathin[eg],prob[eg2],cpath[eg2],cpathin[eg2]
-    #return prob
+    def translate(lis,typ):
+        if typ=='S':
+            ch=' has COVID-19 symptom'
+        else:
+            ch=' is in  incubation period'
+        result='starting from day '
+        result+=str(lis[0][1])
+        result+=', user'+str(lis[0][0])+ch
+        for pro in lis[1:]:
+            result+=', spread virus to user'+str(pro[0])+' at day '+str(pro[1])
+        result+='.  ' 
+        return result
+    senten=''
+    if len(cpath[eg])!=0:
+        for lis in cpath[eg]:
+            senten+='Tracking: '+translate(lis,'S')
+    sentenin=''
+    if len(cpathin[eg])!=0:
+        for lis in cpathin[eg]:
+            sentenin+='Tracking: '+translate(lis,'I')
+    senten2=''
+    if len(cpath[eg2])!=0:
+        for lis in cpath[eg2]:
+            senten2+='Tracking: '+translate(lis,'S')
+    sentenin2=''
+    if len(cpathin[eg2])!=0:
+        for lis in cpathin[eg2]:
+            sentenin2+='Tracking: '+translate(lis,'I')
+    #print(senten)
+    return su,prob[eg],senten,sentenin,prob[eg2],senten2,sentenin2
+    #return prob, cpath,cpathin
     # print('number of safe users',su)##########number of safe people
     # print('Look at user',eg)
     # print('probability of carrying virus',prob[eg])
-    # print('how to get the virus from people with symptom',cpath[eg])        ######is eg safe or not   all the path from patient with symptom
-    # print('how to get the virus from people during incubation',cpathin[eg])      ######is eg safe or not   all the path from patient during incubation
+    # print('Tracking how the virus come from people with symptom (if any)',cpath[eg])        ######is eg safe or not   all the path from patient with symptom
+    # print('Tracking how the virus come from people during incubation (if any)',cpathin[eg])      ######is eg safe or not   all the path from patient during incubation
 
     # print('Look at user',eg2)
     # print('probability of carrying virus',prob[eg2])
-    # print('how to get the virus from people with symptom',cpath[eg2])        ######is eg safe or not   all the path from patient with symptom
-    # print('how to get the virus from people during incubation',cpathin[eg2])      ######is eg safe or not   all the path from patient during incubation
+    # print('Tracking how the virus come from people with symptom (if any)',cpath[eg2])        ######is eg safe or not   all the path from patient with symptom
+    # print('Tracking how the virus come from people during incubation (if any)',cpathin[eg2])      ######is eg safe or not   all the path from patient during incubation
     # print('most dangerous users',[i for i in range(len(prob)) if prob[i]>0.1])
-predict(alpha,beta,N,Noldmeet,Nnewmeet,Nfriendpool,Nsym,eg,eg2)
+print(predict(alpha,beta,N,Noldmeet,Nnewmeet,Nfriendpool,Nsym,eg,eg2))
