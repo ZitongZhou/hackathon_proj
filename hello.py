@@ -8,6 +8,7 @@ Created on Fri Mar 27 15:26:14 2020
 
 from flask import Flask, redirect, url_for, render_template, request, session, flash
 from datetime import timedelta
+from toy import toy
 
 app = Flask(__name__)
 app.secret_key = "hello"
@@ -27,8 +28,12 @@ def login():
     if request.method == 'POST':
         session.permanent = True
         user = request.form["nm"]
+        age = request.form['age']
         session["user"] = user
+        session['age'] = age
+        next_age = toy(age)
         flash("Login successful!")
+        flash(f'next year, {user} will be {next_age} years old.')
         return redirect(url_for("user"))
     else:
         if "user" in session:
