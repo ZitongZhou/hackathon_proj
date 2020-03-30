@@ -10,9 +10,10 @@ from flask import Flask, redirect, url_for, render_template, request, session, f
 from datetime import timedelta
 from main import predict
 from toy import toy
+
 app = Flask(__name__)
 app.secret_key = "hello"
-app.permanent_session_lifetime = timedelta(minutes = 5)
+app.permanent_session_lifetime = timedelta(minutes = 1)
 
 @app.route('/')
 def home():
@@ -26,26 +27,39 @@ def test():
 @app.route('/login', methods = ['POST', 'GET'])
 def login():
     if request.method == 'POST':
-        session.permanent = True
-        alpha = request.form["alpha"]
-        beta = request.form["beta"]
-        N = request.form["N"]
-        Noldmeet = request.form["Noldmeet"]
-        Nnewmeet = request.form["Nnewmeet"]
-        Nfriendpool = request.form["Nfriendpool"]
-        Nsym = request.form["Nsym"]
-        eg = request.form["eg"]
-        eg2 = request.form["eg2"]
+        session.permanent = False
+        alpha = float(request.form["alpha"])
+        beta = float(request.form["beta"])
+        N = int(request.form["N"])
+        Noldmeet = int(request.form["Noldmeet"])
+        Nnewmeet = int(request.form["Nnewmeet"])
+        Nfriendpool = int(request.form["Nfriendpool"])
+        Nsym = int(request.form["Nsym"])
+        eg = int(request.form["eg"])
+        eg2 = int(request.form["eg2"])
         
         user = request.form["nm"]
         session["user"] = user
-        predict(alpha,beta,N,Noldmeet,Nnewmeet,Nfriendpool,Nsym,eg,eg2)
-        flash("Login successful!")
-        flash(f'{user}, thank you for using our model.')
+        if "user" in session:
+
+            su,prob_1,cpath_1,cpathin_1,prob_2,cpath_2,cpathin_2 = predict(alpha,beta,N,Noldmeet,Nnewmeet,Nfriendpool,Nsym,eg,eg2)
+            flash(f"Model successfully loaded!")
+            flash(f'number of safe users: {su}')##########number of safe people
+            flash(f'Look at user: {eg}')
+            flash(f'probability of carrying virus: {prob_1}')
+            flash(f'how to get the virus from people with symptom: {cpath_1}')        ######is eg safe or not   all the path from patient with symptom
+            flash(f'how to get the virus from people during incubation: {cpathin_1}')      ######is eg safe or not   all the path from patient during incubation
+        
+            flash(f'Look at user: {eg2}')
+            flash(f'probability of carrying virus: {prob_2}')
+            flash(f'how to get the virus from people with symptom: {cpath_2}')        ######is eg safe or not   all the path from patient with symptom
+            flash(f'how to get the virus from people during incubation: {cpathin_2}')
+            
+            flash(f'{user}, thank you for using our model.')
         return redirect(url_for("user"))
     else:
         if "user" in session:
-            flash("Already logged in!")
+            flash("Already loaded model!")
             return redirect(url_for("user"))
         return render_template("login.html")
     
@@ -71,3 +85,13 @@ def logout():
     
 if __name__ == "__main__":
     app.run(debug = True)
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
