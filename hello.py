@@ -20,14 +20,10 @@ def home():
     return render_template('index.html')
     # return 'This is the home page <h1>HELLO</h1>'
 
-@app.route('/test')
-def test():
-    return render_template('new.html')
-
 @app.route('/login', methods = ['POST', 'GET'])
 def login():
     if request.method == 'POST':
-        session.permanent = False
+        session.permanent = True
         alpha = float(request.form["alpha"])
         beta = float(request.form["beta"])
         N = int(request.form["N"])
