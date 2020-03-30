@@ -177,4 +177,4 @@ def predict(alpha,beta,N,Noldmeet,Nnewmeet,Nfriendpool,Nsym,eg,eg2):
     # print('Tracking how the virus come from people with symptom (if any)',cpath[eg2])        ######is eg safe or not   all the path from patient with symptom
     # print('Tracking how the virus come from people during incubation (if any)',cpathin[eg2])      ######is eg safe or not   all the path from patient during incubation
     # print('most dangerous users',[i for i in range(len(prob)) if prob[i]>0.1])
-print(predict(alpha,beta,N,Noldmeet,Nnewmeet,Nfriendpool,Nsym,eg,eg2))
+#print(predict(alpha,beta,N,Noldmeet,Nnewmeet,Nfriendpool,Nsym,eg,eg2))
