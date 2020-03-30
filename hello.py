@@ -8,8 +8,8 @@ Created on Fri Mar 27 15:26:14 2020
 
 from flask import Flask, redirect, url_for, render_template, request, session, flash
 from datetime import timedelta
+from main import predict
 from toy import toy
-
 app = Flask(__name__)
 app.secret_key = "hello"
 app.permanent_session_lifetime = timedelta(minutes = 5)
@@ -27,13 +27,21 @@ def test():
 def login():
     if request.method == 'POST':
         session.permanent = True
+        alpha = request.form["alpha"]
+        beta = request.form["beta"]
+        N = request.form["N"]
+        Noldmeet = request.form["Noldmeet"]
+        Nnewmeet = request.form["Nnewmeet"]
+        Nfriendpool = request.form["Nfriendpool"]
+        Nsym = request.form["Nsym"]
+        eg = request.form["eg"]
+        eg2 = request.form["eg2"]
+        
         user = request.form["nm"]
-        age = request.form['age']
         session["user"] = user
-        session['age'] = age
-        next_age = toy(age)
+        predict(alpha,beta,N,Noldmeet,Nnewmeet,Nfriendpool,Nsym,eg,eg2)
         flash("Login successful!")
-        flash(f'next year, {user} will be {next_age} years old.')
+        flash(f'{user}, thank you for using our model.')
         return redirect(url_for("user"))
     else:
         if "user" in session:

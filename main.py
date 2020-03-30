@@ -124,5 +124,5 @@ def predict(alpha,beta,N,Noldmeet,Nnewmeet,Nfriendpool,Nsym,eg,eg2):
     print('probability of carrying virus',prob[eg2])
     print('how to get the virus from people with symptom',cpath[eg2])        ######is eg safe or not   all the path from patient with symptom
     print('how to get the virus from people during incubation',cpathin[eg2])      ######is eg safe or not   all the path from patient during incubation
-    print('most dangerous users',[i for i in range(len(prob)) if prob(i)>0.1])
+    print('most dangerous users',[i for i in range(len(prob)) if prob[i]>0.1])
 predict(alpha,beta,N,Noldmeet,Nnewmeet,Nfriendpool,Nsym,eg,eg2)
